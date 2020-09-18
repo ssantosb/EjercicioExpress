@@ -36,7 +36,7 @@ let guardarMensajesJson = () => {
   });
 };
 
-let guardarMensajeJson = (paramMensaje) => {
+function guardarMensajeJson(paramMensaje) {
   let mensTemp = [];
 
   mensajesJson.forEach((element) => {
@@ -68,7 +68,7 @@ let guardarMensajeJson = (paramMensaje) => {
       console.log("File written successfully\n");
     }
   });
-};
+}
 
 const wsConnection = (server) => {
   const wss = new WebSocket.Server({ server });

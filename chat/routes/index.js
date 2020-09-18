@@ -3,7 +3,7 @@ var router = express.Router();
 
 const Joi = require("joi");
 const fs = require("fs");
-const ws = require("../wslib");
+const ws = require("../../wslib");
 
 //Get todos los mensajes
 router.get("/chat/api/messages", (req, res) => {
@@ -16,7 +16,7 @@ router.get("/chat/api/messages", (req, res) => {
 router.get("/chat/api/messages/:id", (req, res) => {
   fs.readFile("messages.json", (err, data) => {
     const mens = JSON.parse(data).find(
-      (element) => element.ts === parseInt(req.params.id)
+      (element) => element.ts == req.params.id
     );
     if (!mens)
       return res
@@ -35,6 +35,7 @@ router.post("/chat/api/messages", (req, res) => {
       .pattern(new RegExp("([a-zA-Z]+[ ][a-zA-Z]+)"))
       .required(),
     mensaje: Joi.string().min(5).required(),
+    ts: Joi.number(),
   });
   const { error } = schema.validate(req.body);
 
@@ -86,7 +87,7 @@ router.delete("/chat/api/messages/:id", (req, res) => {
   if (!ms) return res.status(404).send("The message was not found");
 
   let arr = JSON.parse(messages);
-  const i = arr.indexOf(mensaje);
+  const i = arr.indexOf(ms);
   arr.splice(i, 1);
 
   let cadenaJson = "[";
@@ -108,6 +109,6 @@ router.delete("/chat/api/messages/:id", (req, res) => {
   res.send(mensaje);
 });
 
-express().listen(3000, () => console.log("Escuchando en el puerto 3000"));
+express().listen(3001, () => console.log("Escuchando en el puerto 3001"));
 express().use(express.json());
 module.exports = router;
